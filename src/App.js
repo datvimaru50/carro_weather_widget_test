@@ -1,56 +1,64 @@
 import React from "react";
-import logo from "./logo.svg";
-import { Counter } from "./features/counter/Counter";
+// import logo from "../public/logo.png";
+// import cloud from "../public/cloud.png";
 import "./App.css";
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <Counter />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <span>
-                    <span>Learn </span>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        React
-                    </a>
-                    <span>, </span>
-                    <a
-                        className="App-link"
-                        href="https://redux.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Redux
-                    </a>
-                    <span>, </span>
-                    <a
-                        className="App-link"
-                        href="https://redux-toolkit.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Redux Toolkit
-                    </a>
-                    ,<span> and </span>
-                    <a
-                        className="App-link"
-                        href="https://react-redux.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        React Redux
-                    </a>
-                </span>
-            </header>
+            <img src="/logo.png" className="App-logo" alt="logo" />
+            <form>
+                <input type="text" placeholder="Type city name, eg: Hanoi" />
+                <button aria-label="Search">Search</button>
+            </form>
+            <div className="weatherData">
+                <p className="cityName">Singapore</p>
+
+                <div className="currentWeather">
+                    <div>
+                        <img src="/cloud.png" alt="icon" />
+                        <b>Mostly Cloudy</b>
+                    </div>
+                    <div className="temp">
+                        <div>
+                            30<sup>o</sup>C
+                        </div>
+                    </div>
+                    <div>
+                        <span>Wind: 2.1 m/s</span>
+                        <span>Sunrise: 07:05 AM</span>
+                        <span>Sunset: 07:16 PM</span>
+                    </div>
+                </div>
+                <div className="fiveDaysWeather">
+                    <div>
+                        <span>THU</span>
+                        <img src="/icon-weather.png" alt="icon" />
+                        <span>30<sup>o</sup>C</span>
+                    </div>
+                    <div>
+                        <span>FRI</span>
+                        <img src="/icon-weather.png" alt="icon" />
+                        <span>30<sup>o</sup>C</span>
+                    </div>
+                    <div>
+                        <span>SAT</span>
+                        <img src="/icon-weather.png" alt="icon" />
+                        <span>30<sup>o</sup>C</span>
+                    </div>
+                    <div>
+                        <span>SUN</span>
+                        <img src="/icon-weather.png" alt="icon" />
+                        <span>30<sup>o</sup>C</span>
+                    </div>
+                    <div>
+                        <span>MON</span>
+                        <img src="/icon-weather.png" alt="icon" />
+                        <span>30<sup>o</sup>C</span>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
     );
 }

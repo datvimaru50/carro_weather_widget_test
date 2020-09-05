@@ -1,29 +1,106 @@
 .App {
+    width: 385px;
+    margin: 0 auto;
     text-align: center;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+form {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+input[type="text"] {
+    width: calc(100% - 75px);
+    padding: 0 5px;
+    box-sizing: border-box;
+    height: 25px;
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+}
+button {
+    width: 60px;
+    text-align: center;
+    height: 25px;
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+}
+button:hover{
+    cursor: pointer;
+}
+
+.weatherData{
+    border: 3px solid #5e6f77;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 12px;
+    font-size: 14px;
+}
+.cityName {
+    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+.currentWeather {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.currentWeather > div:first-child {
+    /* text-align: center; */
+    width: 100px;
+}
+.currentWeather > div:first-child img{
+    display: block;
+    margin: 0 auto 10px auto;
+}
+.currentWeather > div:first-child b{
+    font-size: 14px;
+}
+.currentWeather .temp{
+    flex: auto;
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    font-size: 30px;
+    line-height: 1;
+    padding-left: 15px;
+}
+.currentWeather .temp > div{
+    position: relative;
+    top: -2px;
+}
+.currentWeather .temp sup{
+    font-size: 61%;
+}
+.currentWeather > div:last-child {
+    text-align: left;
+    width: 113px;
+    display: flex;
+    flex-direction: column;
+}
+.fiveDaysWeather {
+    display: flex;
+    justify-content: space-between;
+}
+.fiveDaysWeather > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.fiveDaysWeather > div span:last-child{
+    line-height: 1;
+}
+.fiveDaysWeather > div span:last-child sup{
+    font-size: 61%;
+}
+.fiveDaysWeather > div img{
+    margin: 20px 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-float infinite 3s ease-in-out;
     }
-}
-
-.App-header {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-}
-
-.App-link {
-    color: rgb(112, 76, 182);
 }
 
 @keyframes App-logo-float {
