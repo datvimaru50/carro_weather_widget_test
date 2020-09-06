@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_KEY = "567fb009055f8d8fddf69948130c088f";
+// const API_KEY = "567fb009055f8d8fddf69948130c088f";
+// const API_KEY = "61737e3df5801f4acde69b09f4c29f4c";
+const API_KEY = "973a2c8241caab0c413eb6053b005bc1";
 
 export default {
     fetchCurrentWeather: ({ query }) =>

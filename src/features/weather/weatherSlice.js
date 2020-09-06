@@ -18,6 +18,7 @@ export const weatherSlice = createSlice({
     name: sliceName,
     initialState: {
         current: null,
+        forcast: null,
         loading: true,
         error: null,
     },
@@ -34,7 +35,14 @@ export const weatherSlice = createSlice({
             state.loading = false;
             state.error = error;
         },
+        [fetchWeatherForecast.fulfilled]: (state, { payload, meta }) => {
+            state.forcast = payload.data;
+        },
+        
     },
 });
 
 export default weatherSlice.reducer;
+
+export const selectCurrentData = (state) => state.weather.current;
+export const selectForcastData = (state) => state.weather.forcast;

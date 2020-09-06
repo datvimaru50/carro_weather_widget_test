@@ -1,66 +1,135 @@
-import React from "react";
-// import logo from "../public/logo.png";
-// import cloud from "../public/cloud.png";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 import "./App.css";
 
-function App() {
-    return (
-        <div className="App">
-            <img src="/logo.png" className="App-logo" alt="logo" />
-            <form>
-                <input type="text" placeholder="Type city name, eg: Hanoi" />
-                <button aria-label="Search">Search</button>
-            </form>
-            <div className="weatherData">
-                <p className="cityName">Singapore</p>
+import {
+  selectCurrentData,
+  selectForcastData,
+  fetchCurrentWeather,
+  fetchWeatherForecast,
+} from "./features/weather/weatherSlice";
 
-                <div className="currentWeather">
-                    <div>
-                        <img src="/cloud.png" alt="icon" />
-                        <b>Mostly Cloudy</b>
-                    </div>
-                    <div className="temp">
-                        <div>
-                            30<sup>o</sup>C
-                        </div>
-                    </div>
-                    <div>
-                        <span>Wind: 2.1 m/s</span>
-                        <span>Sunrise: 07:05 AM</span>
-                        <span>Sunset: 07:16 PM</span>
-                    </div>
-                </div>
-                <div className="fiveDaysWeather">
-                    <div>
-                        <span>THU</span>
-                        <img src="/icon-weather.png" alt="icon" />
-                        <span>30<sup>o</sup>C</span>
-                    </div>
-                    <div>
-                        <span>FRI</span>
-                        <img src="/icon-weather.png" alt="icon" />
-                        <span>30<sup>o</sup>C</span>
-                    </div>
-                    <div>
-                        <span>SAT</span>
-                        <img src="/icon-weather.png" alt="icon" />
-                        <span>30<sup>o</sup>C</span>
-                    </div>
-                    <div>
-                        <span>SUN</span>
-                        <img src="/icon-weather.png" alt="icon" />
-                        <span>30<sup>o</sup>C</span>
-                    </div>
-                    <div>
-                        <span>MON</span>
-                        <img src="/icon-weather.png" alt="icon" />
-                        <span>30<sup>o</sup>C</span>
-                    </div>
-                    
-                </div>
+const iconBaseUrl = "http://openweathermap.org/img/w/";
+
+function App() {
+  const [query, setQuery] = useState("");
+
+  const dispatch = useDispatch();
+  const currentData = useSelector(selectCurrentData);
+  const forcastData = useSelector(selectForcastData);
+
+  const loadingStatus = useSelector((state) => state.weather.loading);
+  const error = useSelector((state) => state.weather.error);
+
+  useEffect(() => {
+    dispatch(fetchCurrentWeather({ query: "hanoi" }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currentData) {
+      const { lat, lon } = currentData.coord;
+      dispatch(fetchWeatherForecast({ lat, lon }));
+    }
+  }, [dispatch, currentData]);
+
+  let content;
+
+  if (loadingStatus) {
+    content = <div className="loader">Loading...</div>;
+  } else {
+    if (error) {
+      content = <div>City not found</div>;
+    } else {
+      content = (
+        <>
+          <CurrentWeather
+            cityName={currentData.name}
+            icon={iconBaseUrl + currentData.weather[0].icon + ".png"}
+            mainWeather={currentData.weather[0].main}
+            mainTemp={currentData.main.temp}
+            windSpeed={currentData.wind.speed}
+            sunriseTime={moment.unix(currentData.sys.sunrise).format("LT")}
+            sunsetTime={moment.unix(currentData.sys.sunset).format("LT")}
+          />
+
+          {forcastData && (
+            <div className="fiveDaysWeather">
+              {forcastData.daily.slice(1, 6).map((item, idx) => (
+                <ForcastWeatherDayItem
+                  key={idx}
+                  date={moment.unix(item.dt).format("ddd").toUpperCase()}
+                  icon={iconBaseUrl + item.weather[0].icon + ".png"}
+                  temp={Math.floor(item.temp.day)}
+                />
+              ))}
             </div>
-        </div>
-    );
+          )}
+        </>
+      );
+    }
+  }
+
+  function handleClick(e) {
+    e.preventDefault();
+    dispatch(fetchCurrentWeather({ query }));
+  }
+
+  return (
+    <div className="App">
+      <img src="/logo.png" className="App-logo" alt="logo" />
+      <form>
+        <input
+          type="text"
+          placeholder="Type city name, eg: Hanoi"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button aria-label="Search" onClick={handleClick}>
+          Search
+        </button>
+      </form>
+      <div className="weatherData">{content}</div>
+    </div>
+  );
 }
 
 export default App;
+
+function CurrentWeather(props) {
+  return (
+    <>
+      <p className="cityName">{props.cityName}</p>
+      <div className="currentWeather">
+        <div>
+          <img src={props.icon} alt="icon" />
+          <b>{props.mainWeather}</b>
+        </div>
+        <div className="temp">
+          <div>
+            {props.mainTemp}
+            <sup>o</sup>C
+          </div>
+        </div>
+        <div>
+          <span>Wind: {props.windSpeed} m/s</span>
+          <span>Sunrise: {props.sunriseTime}</span>
+          <span>Sunset: {props.sunsetTime}</span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ForcastWeatherDayItem(props) {
+  return (
+    <div>
+      <span>{props.date}</span>
+      <img src={props.icon} alt="icon" />
+      <span>
+        {props.temp}
+        <sup>o</sup>C
+      </span>
+    </div>
+  );
+}
